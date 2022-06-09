@@ -7,7 +7,7 @@ import FilmServece from '../services/servece';
 export default class FilmsList extends Component {
    
     filmServece = new FilmServece();
-    
+
     state = {
         filmList: null,
         baseImageUrl: null,
@@ -15,7 +15,6 @@ export default class FilmsList extends Component {
 
     constructor(){
       super();
-       
         this.getFilmList();
     };
   
@@ -35,28 +34,25 @@ export default class FilmsList extends Component {
     };
 
   render() {
-      console.log('render_FilmList', this.state.baseImageUrl );
-    return (
-      <Row className ='grid-container'>
-          <Col>
-              <FilmCard filmProps = {this.state}/>
-          </Col>
-          <Col>
-              Рандомный текст 2  
-          </Col>
-          <Col>
-              Рандомный текст 3
-          </Col>
-          <Col>
-              Рандомный текст 4  
-          </Col>
-          <Col>
-              Рандомный текст 5
-          </Col>
-          <Col>
-              Рандомный текст 6  
-          </Col>
-        </Row>
-    )
+      console.log(this.state);
+      if(this.state.filmList){
+
+        const filmCard = this.state.filmList.map((film)=>{
+            return (
+            <Col>
+                <FilmCard 
+                filmProps = {film}
+                baseImageUrl = {this.state.baseImageUrl}
+                />
+            </Col>
+        )
+      })
+      return (
+        <Row className ='grid-container'>
+           {filmCard}
+          </Row>
+      )
+    }
   }
 }
+ 
