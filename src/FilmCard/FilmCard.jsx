@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
+import 'antd/dist/antd.css';
 import './FilmCard.css'
-import {Col, Row, Typography, Tag} from 'antd'
+import {Col, Row, Typography, Tag, Rate, Image} from 'antd'
 import { format } from 'date-fns'
 
 
@@ -12,7 +13,7 @@ export default class FilmCard extends Component {
     state = {
         srcForImg: '#',
         title: 'loading',
-        average: '0',
+        average: 0,
         data: null,
         text: '',
         key: 1
@@ -40,10 +41,10 @@ export default class FilmCard extends Component {
     const formatText = (textForCard = 'No description :(') => {
         if(!textForCard) textForCard = 'No description';
         let clippedText = textForCard;
-        if(textForCard.length >= 204){
+        if(textForCard.length >= 156){
             clippedText = clippedText
             .split(' ')
-            .slice(0, 34)
+            .slice(0, 20)
             .join(' ');
             clippedText = `${clippedText} ...`;
         };
@@ -54,12 +55,12 @@ export default class FilmCard extends Component {
       <div key={this.state.id} className='film-card'>
           <Row className='card-container'>
                <Col>
-                   <img className='card-image' src={this.state.srcForImg} alt="testImage" />
+                   <img  className='card-image' src={this.state.srcForImg} alt="testImage" />
                </Col> 
 
               <Col className='card-container-body'>
               <Typography className='card-typography'>
-                  <Title className='card-title'>{this.state.title}</Title>
+                  <Title level={5} className='card-title'>{this.state.title}</Title>
                   <div className='card-average'><span className='card-average-text'>{this.state.average}</span></div>
               </Typography>
               <div className='card-date'>{formatTime(this.state.data)}</div>
@@ -74,6 +75,7 @@ export default class FilmCard extends Component {
                       {formatText(this.state.text)}
                   </span>
               </Paragraph>
+              <Rate className = 'card-stars' key={this.state.average} count ={10} disabled ={true} allowHalf defaultValue = {this.state.average}/>
               </Col>
           </Row>
       </div>
