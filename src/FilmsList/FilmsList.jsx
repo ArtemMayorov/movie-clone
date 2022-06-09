@@ -5,44 +5,36 @@ import './FilmsList.css'
 import FilmServece from '../services/servece';
 
 export default class FilmsList extends Component {
-   
     filmServece = new FilmServece();
 
     state = {
         filmList: null,
-        baseImageUrl: null,
     };
 
     constructor(){
       super();
-        this.getFilmList();
+        this.getFilmList('return', 1);
     };
   
-       async getFilmList(){
-        await this.filmServece.getFilms('return', 1)
+       async getFilmList(filmName = 'return', page = 1){
+        await this.filmServece.getFilms(filmName, page)
         .then(filmsCollection => {
             this.setState({
                 filmList: filmsCollection  
             })
         })
-        await this.filmServece.getConfig()
-        .then(configImage => {
-            this.setState({
-                baseImageUrl: configImage.secure_base_url  
-            })
-        })
     };
 
   render() {
-      console.log(this.state);
+      console.log('FilmListThisState',this.state.filmList );
       if(this.state.filmList){
-
         const filmCard = this.state.filmList.map((film)=>{
+            console.log('film.id', film.id);
             return (
-            <Col>
+            <Col key={film.id}>
                 <FilmCard 
+                
                 filmProps = {film}
-                baseImageUrl = {this.state.baseImageUrl}
                 />
             </Col>
         )

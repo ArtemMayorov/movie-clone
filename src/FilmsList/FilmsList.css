@@ -1,6 +1,5 @@
 .grid-container{
     padding: 19px 32px;
-    border:  1px solid red;
     display: grid;
     grid-template-columns: 1fr 1fr ;
     grid-template-rows: repeat(6, 1fr);

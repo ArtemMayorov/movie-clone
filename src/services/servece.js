@@ -15,20 +15,5 @@ export default class FilmServece {
         const res = await this.getResource(`page=${page}&query=${filmName}`);
         return res.results
     }
-    async getConfig(){
-        let url = `${this._apiBase}/configuration?${this._apiKey}`
-        const config = await fetch(url)
-        .then((result)=>{
-            return result.json();
-        })
-        .then((data)=>{
-           return data.images
-        })
-     return config
-    }
 
 };
-const getFilm = new FilmServece();
-// const test = getFilm.getFilms('return', 1);
-// const test2 = getFilm.getConfig()
-// console.log(test2);
