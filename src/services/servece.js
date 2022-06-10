@@ -1,6 +1,7 @@
 
 export default class FilmServece {
     _apiBase = 'https://api.themoviedb.org/3';
+    // _apiKey = 'api_key=6c8fa39627c89b3c87ca11fd477aab8888c&' // кривой 
     _apiKey = 'api_key=6c8fa39627c89b3c87ca11fd477aab8c&'
     
     constructor(){};
@@ -15,5 +16,4 @@ export default class FilmServece {
         const res = await this.getResource(`page=${page}&query=${filmName}`);
         return res.results
     }
-
 };
