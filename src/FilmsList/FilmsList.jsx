@@ -3,42 +3,21 @@ import {Col, Row, Spin, Alert} from 'antd'
 import FilmCard from '../FilmCard/FilmCard'
 import 'antd/dist/antd.css';
 import './FilmsList.css'
-import FilmServece from '../services/servece';
 
 export default class FilmsList extends Component {
-    filmServece = new FilmServece();
-    state = {
-        filmList: null,
-        loading: true,
-        error: false,
-    };
-    constructor(){
-      super();
-        this.getFilmList('max', 1);
-    };
-    onError = () => {
-        this.setState({
-            error: true,
-            loading: false,
-        })
-    };
-       async getFilmList(filmName = 'return', page = 1){
-        await this.filmServece.getFilms(filmName, page)
-        .then(filmsCollection => {
-            this.setState({
-                filmList: filmsCollection, 
-                loading:false
-            })
-        }).catch(this.onError)
-    };
+    constructor(props){
+        super()
+    }
   
     render() {
-        if(this.state.loading) {
+        const {options:{ loading, error, filmList }} = this.props
+        console.log('error', error);
+        if(loading) {
             return(
                 <Spin size="large" className = "spin"/>
             )
         }
-        if(this.state.error) {
+        if(error) {
             return(
                 <Alert
                 message="Oops..."
@@ -47,7 +26,7 @@ export default class FilmsList extends Component {
               />
             )
         }
-          const filmCard = this.state.filmList.map((film)=>{
+          const filmCard = filmList.map((film)=>{
               return (
               <Col key={film.id}>
                   <FilmCard 
@@ -56,13 +35,11 @@ export default class FilmsList extends Component {
               </Col>
           )
         });
-
         return (
           <Row className ='grid-container'>
              {filmCard}
             </Row>
         )
-      
     }
 }
  

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { Alert } from 'antd';
 
+import 'antd/dist/antd.css';
 const NoInternetConnection = (props) => {
   const [isOnline, setOnline] = useState(true);
 
@@ -14,9 +16,15 @@ const NoInternetConnection = (props) => {
     setOnline(false);
   })
   if (isOnline) {
-    return props.children
+    return null
   } else {
-    return <h1>No Interner Connection. Please try again later.</h1>;
+    return ( 
+    <Alert
+      className='no-internet-title'
+      message="No Interner Connection. Please try again later."
+      type="warning"
+    />
+    )
   }
 }
 
