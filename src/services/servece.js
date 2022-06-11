@@ -7,9 +7,7 @@ export default class FilmServece {
     constructor(){};
     async getResource(url) {
         const res = await fetch(`${this._apiBase}/search/movie?${this._apiKey}&${url}`)
-        if(!res.ok){
-            throw new Error(`Could not fetch ${url}`)
-        }
+        if(!res.ok) throw new Error(`Could not fetch ${url}`)
         return res.json();
     };
     async getFilms(filmName = 'return', page = 1){

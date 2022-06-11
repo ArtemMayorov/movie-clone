@@ -31,18 +31,22 @@ export default class FilmCard extends Component {
     }
     render() {
     const {Title, Paragraph} = Typography    
+    
     const formatTime = (releaseDate ) => {
-        if(releaseDate === null) releaseDate = '0000-00-00'
+        if(!releaseDate) releaseDate = '0000-00-00'
+        // if(releaseDate === undefined) releaseDate = '0000-00-00'
         const dateArguments = releaseDate.split('-')
         const [y , m , d ] = dateArguments;
         return format(new Date(y, m, d), 'MMMM d, Y');
     };
 
-    const formatText = (textForCard = 'No description :(') => {
+    const formatText = (textForCard) => {
+        
         if(!textForCard) textForCard = 'No description';
+  
         let clippedText = textForCard;
         if(textForCard.length >= 156){
-            clippedText = clippedText
+            clippedText = textForCard
             .split(' ')
             .slice(0, 20)
             .join(' ');
