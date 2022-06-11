@@ -12,8 +12,7 @@ export default class SearchInput extends Component {
         })
     }; 
     handleChange(){
-        this.props.updateText(this.state.searchValue)
-        this.props.handleText(this.state.searchValue)
+        this.props.updateText(this.state.searchValue);
     }
   
   render() {

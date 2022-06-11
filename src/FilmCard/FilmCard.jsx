@@ -3,13 +3,14 @@ import 'antd/dist/antd.css';
 import './FilmCard.css'
 import {Col, Row, Typography, Tag, Rate, Image} from 'antd'
 import { format } from 'date-fns'
+import FilmServece from '../services/servece';
 
 
 export default class FilmCard extends Component {
     constructor(props){
         super();
     };
-
+    filmServece = new FilmServece();
     state = {
         srcForImg: '#',
         title: 'loading',
@@ -20,18 +21,21 @@ export default class FilmCard extends Component {
     };
 
     componentDidMount() {
+        const {original_title, vote_average, release_date, overview, id, backdrop_path } = this.props.filmProps;
+        
         this.setState({
-            srcForImg: `https://image.tmdb.org/t/p/w500${this.props.filmProps.backdrop_path}`,
-            title: this.props.filmProps.original_title,
-            average: this.props.filmProps.vote_average,
-            data: this.props.filmProps.release_date,
-            text: this.props.filmProps.overview,
-            key: this.props.filmProps.id
+            srcForImg: this.filmServece.getImage(backdrop_path),
+            title: original_title,
+            average: vote_average,
+            data: release_date,
+            text: overview,
+            key: id
         })
+
     }
     render() {
     const {Title, Paragraph} = Typography    
-    
+    console.log('imagege', this.state.srcForImg);
     const formatTime = (releaseDate ) => {
         if(!releaseDate) releaseDate = '0000-00-00'
         const dateArguments = releaseDate.split('-')
@@ -39,31 +43,31 @@ export default class FilmCard extends Component {
         return format(new Date(y, m, d), 'MMMM d, Y');
     };
 
-    const formatText = (textForCard) => {
-        
+    const formatText = (textForCard, section ) => {
         if(!textForCard) textForCard = 'No description';
-  
         let clippedText = textForCard;
-        if(textForCard.length >= 156){
-            clippedText = textForCard
-            .split(' ')
-            .slice(0, 20)
-            .join(' ');
+        if(textForCard.length >= 53){
+             clippedText = textForCard.split(' ')
+            if(section === 'title'){
+             clippedText = clippedText.slice(0, 9)
+           }else if(section === 'description') {
+             clippedText = clippedText.slice(0, 20)
+         }      
+            clippedText = clippedText.join(' ');
             clippedText = `${clippedText} ...`;
-        };
+        }
         return clippedText;
     };
-
     return (
       <div key={this.state.id} className='film-card'>
           <Row className='card-container'>
                <Col>
-                   <img  className='card-image' src={this.state.srcForImg} alt="testImage" />
+                   <img className='card-image' src={this.state.srcForImg} alt="testImage" />
                </Col> 
 
               <Col className='card-container-body'>
               <Typography className='card-typography'>
-                  <Title level={5} className='card-title'>{this.state.title}</Title>
+                  <Title level={5} className='card-title'>{formatText(this.state.title, 'title')}</Title>
                   <div className='card-average'><span className='card-average-text'>{this.state.average}</span></div>
               </Typography>
               <div className='card-date'>{formatTime(this.state.data)}</div>
@@ -75,7 +79,7 @@ export default class FilmCard extends Component {
               </Tag>
               <Paragraph className= 'card-description'>
                   <span className='card-description-text'>
-                      {formatText(this.state.text)}
+                      {formatText(this.state.text, 'description')}
                   </span>
               </Paragraph>
               <Rate className = 'card-stars' key={this.state.average} count ={10} disabled ={true} allowHalf defaultValue = {this.state.average}/>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import { debounce } from "lodash"
 import FilmsList from '../FilmsList/FilmsList'
 import SearchInput from '../SearchInput/SearchInput';
 import {Spin, Alert, Typography, Pagination} from 'antd'
@@ -13,22 +13,32 @@ export default class SearchPage extends Component {
       searchText:'max',
       page: 1,
     }
-    handleText = (text) => {
-      this.setState({
-        searchText: text,
-        page: 1
-      })
-    }
+ 
   
     handleChange = (page) => {
-      this.setState({
-        page,
-      })
-      this.props.updateText(this.state.searchText, page)
+      this.updatePage(this.state.searchText, page)
     }
+ 
+    updatePage = (newSearchText, page) =>{
+      if(newSearchText.trim() === '') return;
+      if(newSearchText !== this.state.searchText){
+        this.setState({
+          page:1
+        })
+      }
+      this.props.getFimList(newSearchText, page);
+        this.setState({
+          searchText: newSearchText,
+          page
+        })
+      }
+    
+    
+    debouncedUpdateText = debounce(this.updatePage, 2000)
+
   render() {
     const { Title } = Typography;
-    const {updateText ,options:{ loading, error, filmList, loadingList,totalFilmsPage, totalFilms, filmListPage }} = this.props;
+    const { options:{ loading, error, filmList, loadingList,totalFilmsPage, totalFilms, filmListPage }} = this.props;
     const {options} = this.props;
     if(loading) {
         return(
@@ -56,14 +66,14 @@ export default class SearchPage extends Component {
     onChange = {this.handleChange}
     showSizeChanger ={false}
     defaultCurrent={this.state.page}
+    defaultPageSize ={20}
     />
     </React.Fragment>
 
     return (
     <React.Fragment>
     <SearchInput 
-    handleText = {this.handleText}
-    updateText={updateText}/>
+    updateText={this.debouncedUpdateText}/>
     {loadList}
     {filmNotFound}
     </React.Fragment>

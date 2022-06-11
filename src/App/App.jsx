@@ -5,7 +5,7 @@ import './App.css'
 import FilmServece from '../services/servece';
 import SearchPage from '../SearchPage/SearchPage';
 import MainHeader from '../MainHeader/MainHeader';
-import { debounce } from "lodash"
+
 
 
 export default class App extends Component {
@@ -35,12 +35,7 @@ export default class App extends Component {
         })
     };
 
-      updateText = (newSearchText, page) =>{
-      if(newSearchText.trim() === '') return;
-      this.getFilmList(newSearchText, page)
-    }
-    debouncedUpdateText = debounce(this.updateText, 2000)
-
+    
      getFilmList = async(filmName = 'return', page = 1)=>{
         this.setState({
           loadingList:true
@@ -64,7 +59,8 @@ export default class App extends Component {
         <MainHeader/>
         <NoInternetConnection />
         <SearchPage 
-      updateText ={this.debouncedUpdateText}
+        getFimList = { this.getFilmList}
+      // updateText ={this.debouncedUpdateText}
       options={this.state}/> 
       </section>
     );
