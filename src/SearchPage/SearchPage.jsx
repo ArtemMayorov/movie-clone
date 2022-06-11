@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { debounce } from "lodash"
 import FilmsList from '../FilmsList/FilmsList'
 import SearchInput from '../SearchInput/SearchInput';
-import {Spin, Alert, Typography, Pagination} from 'antd'
+import {Spin, Alert, Typography, Pagination, Empty} from 'antd'
 import 'antd/dist/antd.css';
 
 export default class SearchPage extends Component {
@@ -56,8 +56,22 @@ export default class SearchPage extends Component {
     };
  
     const filmNotFound = filmList.length === 0 
-                          && !loadingList ? <Title>NotFound</Title> : null;
-    const loadList = loadingList ?  
+                          && !loadingList ? 
+                          // <Title>NotFound</Title>
+                          <Empty
+                          image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+                          imageStyle={{
+                            margin:40,
+                            height: 60,
+                          }}
+                          description={
+                            <span>
+                              Movies not found :(
+                            </span>
+                          }/>
+                           : null;
+
+    const loadList = loadingList  ?  
     <Spin size="large" className = "spin"/> : 
     <React.Fragment>
     <FilmsList options={options}/>
@@ -69,13 +83,13 @@ export default class SearchPage extends Component {
     defaultPageSize ={20}
     />
     </React.Fragment>
-
+      const films = !filmNotFound ? loadList: null;
     return (
     <React.Fragment>
     <SearchInput 
     updateText={this.debouncedUpdateText}/>
-    {loadList}
     {filmNotFound}
+    {films}
     </React.Fragment>
     )
   }

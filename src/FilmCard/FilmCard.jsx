@@ -22,7 +22,7 @@ export default class FilmCard extends Component {
 
     componentDidMount() {
         const {original_title, vote_average, release_date, overview, id, backdrop_path } = this.props.filmProps;
-        
+
         this.setState({
             srcForImg: this.filmServece.getImage(backdrop_path),
             title: original_title,
@@ -31,11 +31,10 @@ export default class FilmCard extends Component {
             text: overview,
             key: id
         })
-
     }
     render() {
     const {Title, Paragraph} = Typography    
-    console.log('imagege', this.state.srcForImg);
+
     const formatTime = (releaseDate ) => {
         if(!releaseDate) releaseDate = '0000-00-00'
         const dateArguments = releaseDate.split('-')

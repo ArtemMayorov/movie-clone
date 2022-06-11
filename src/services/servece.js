@@ -20,7 +20,6 @@ export default class FilmServece {
         if(path){
             return `${this._apiImageBase}${path}`;
         }
-        console.log('this.src', this.src);
             return this.src.plug      
     }
 };
