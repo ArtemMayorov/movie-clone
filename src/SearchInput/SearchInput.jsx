@@ -10,10 +10,10 @@ export default class SearchInput extends Component {
         this.setState({
             searchValue: text
         })
-        
     }; 
     handleChange(){
         this.props.updateText(this.state.searchValue)
+        this.props.handleText(this.state.searchValue)
     }
   
   render() {

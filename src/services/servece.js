@@ -12,6 +12,6 @@ export default class FilmServece {
     };
     async getFilms(filmName = 'return', page = 1){
         const res = await this.getResource(`page=${page}&query=${filmName}`);
-        return res.results
+        return res
     }
 };

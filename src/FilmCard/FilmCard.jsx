@@ -34,7 +34,6 @@ export default class FilmCard extends Component {
     
     const formatTime = (releaseDate ) => {
         if(!releaseDate) releaseDate = '0000-00-00'
-        // if(releaseDate === undefined) releaseDate = '0000-00-00'
         const dateArguments = releaseDate.split('-')
         const [y , m , d ] = dateArguments;
         return format(new Date(y, m, d), 'MMMM d, Y');

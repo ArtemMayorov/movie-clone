@@ -16,19 +16,17 @@ export default class App extends Component {
         loading: true,
         loadingList: false,
         error: false,
+        filmListPage: null,
+        totalFilmsPage: null,
+        totalFilms: null,
     };
     constructor(){
       super();
-      console.log(this);
-      
     };
     componentDidMount(){
       this.getFilmList();
     }
-    componentDidUpdate(prevProps){
-      if(this.state.filmList !== prevProps.filmList){
-      }
-    }
+
     onError = (err) => {
       console.log('err',err);
         this.setState({
@@ -36,11 +34,10 @@ export default class App extends Component {
             loading: false,
         })
     };
-    
-    updateText = (newSearchText) =>{
-      console.log('newSearchText', newSearchText);
+
+      updateText = (newSearchText, page) =>{
       if(newSearchText.trim() === '') return;
-      this.getFilmList(newSearchText, 1)
+      this.getFilmList(newSearchText, page)
     }
     debouncedUpdateText = debounce(this.updateText, 2000)
 
@@ -51,15 +48,17 @@ export default class App extends Component {
         await this.filmServece.getFilms(filmName, page)
         .then(filmsCollection => {
             this.setState({
-                filmList: filmsCollection, 
+                filmList: filmsCollection.results, 
+                filmListPage: filmsCollection.page,
+                totalFilmsPage: filmsCollection.total_pages,
+                totalFilms: filmsCollection.total_results,
                 loading:false,
-                loadingList:false
+                loadingList:false,
             })
         }).catch(this.onError)
     };
 
   render() {
-  
     return (
       <section className="container">
         <MainHeader/>
