@@ -22,4 +22,7 @@ export default class FilmServece {
         }
             return this.src.plug      
     }
+    getRatedMovies(){
+       return JSON.parse(localStorage.getItem('dataAverage'));
+    }
 };

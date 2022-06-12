@@ -10,12 +10,13 @@ export default class FilmsList extends Component {
     }
     render() {
         const { filmList } = this.props.options;
-        
+        const {addAverange} = this.props
         const filmCard = filmList.map((film)=>{
               return (
               <Col key={film.id}>
                   <FilmCard 
                   filmProps = {film}
+                  addAverange={addAverange}
                   />
               </Col>
           )

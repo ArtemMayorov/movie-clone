@@ -5,7 +5,7 @@ import './App.css'
 import FilmServece from '../services/servece';
 import SearchPage from '../SearchPage/SearchPage';
 import MainHeader from '../MainHeader/MainHeader';
-
+import RatedPage from '../RatedPage/RatedPage';
 
 
 export default class App extends Component {
@@ -19,6 +19,8 @@ export default class App extends Component {
         filmListPage: null,
         totalFilmsPage: null,
         totalFilms: null,
+        dataAverage:[],
+        selectedPage: 'search',
     };
     constructor(){
       super();
@@ -35,7 +37,14 @@ export default class App extends Component {
         })
     };
 
-    
+    addAverange = (id, average) => {
+      this.setState(() =>{
+      return {
+        dataAverage:[...this.state.dataAverage, {[id]: average}]
+      }})
+      localStorage.setItem('dataAverage', JSON.stringify(this.state.dataAverage))
+    }
+
      getFilmList = async(filmName = 'return', page = 1)=>{
         this.setState({
           loadingList:true
@@ -52,16 +61,30 @@ export default class App extends Component {
             })
         }).catch(this.onError)
     };
-
+    getSelectedPage =(page)=>{
+      this.setState(()=>{
+        return {selectedPage: page}
+      })
+      console.log(this.state.selectedPage);
+    }
+  
   render() {
+    const page = this.state.selectedPage === 'search'? 
+    <SearchPage 
+    getFimList = { this.getFilmList}
+    addAverange = {this.addAverange}
+    options={this.state}/> 
+    : <RatedPage
+    options={this.state}
+    />
+
     return (
       <section className="container">
-        <MainHeader/>
+        <MainHeader
+        getSelectedPage = {this.getSelectedPage}
+        />
         <NoInternetConnection />
-        <SearchPage 
-        getFimList = { this.getFilmList}
-      // updateText ={this.debouncedUpdateText}
-      options={this.state}/> 
+        {page}
       </section>
     );
   }

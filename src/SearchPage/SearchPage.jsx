@@ -13,8 +13,6 @@ export default class SearchPage extends Component {
       searchText:'max',
       page: 1,
     }
- 
-  
     handleChange = (page) => {
       this.updatePage(this.state.searchText, page)
     }
@@ -33,13 +31,12 @@ export default class SearchPage extends Component {
         })
       }
     
-    
     debouncedUpdateText = debounce(this.updatePage, 2000)
 
   render() {
-    const { Title } = Typography;
-    const { options:{ loading, error, filmList, loadingList,totalFilmsPage, totalFilms, filmListPage }} = this.props;
     const {options} = this.props;
+    const { addAverange ,options:{ loading, error, filmList, loadingList,totalFilmsPage, totalFilms, filmListPage }} = this.props;
+    
     if(loading) {
         return(
             <Spin size="large" className = "spin"/>
@@ -57,7 +54,6 @@ export default class SearchPage extends Component {
  
     const filmNotFound = filmList.length === 0 
                           && !loadingList ? 
-                          // <Title>NotFound</Title>
                           <Empty
                           image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
                           imageStyle={{
@@ -66,7 +62,7 @@ export default class SearchPage extends Component {
                           }}
                           description={
                             <span>
-                              Movies not found :(
+                              Movies not found 
                             </span>
                           }/>
                            : null;
@@ -74,7 +70,10 @@ export default class SearchPage extends Component {
     const loadList = loadingList  ?  
     <Spin size="large" className = "spin"/> : 
     <React.Fragment>
-    <FilmsList options={options}/>
+    <FilmsList 
+    options={options}
+    addAverange ={addAverange}
+    />
     <Pagination
     total={totalFilms}
     onChange = {this.handleChange}
@@ -83,7 +82,7 @@ export default class SearchPage extends Component {
     defaultPageSize ={20}
     />
     </React.Fragment>
-      const films = !filmNotFound ? loadList: null;
+    const films = !filmNotFound ? loadList: null;
     return (
     <React.Fragment>
     <SearchInput 
