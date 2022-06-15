@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { debounce } from "lodash"
 import FilmsList from '../FilmsList/FilmsList'
 import SearchInput from '../SearchInput/SearchInput';
-import {Spin, Alert, Typography, Pagination, Empty} from 'antd'
+import {Spin, Alert, Pagination, Empty} from 'antd'
 import 'antd/dist/antd.css';
 
 export default class SearchPage extends Component {
@@ -10,7 +10,7 @@ export default class SearchPage extends Component {
         super();
     };
     state = {
-      searchText:'max',
+      searchText:'',
       page: 1,
     }
     handleChange = (page) => {
@@ -21,17 +21,17 @@ export default class SearchPage extends Component {
       if(newSearchText.trim() === '') return;
       if(newSearchText !== this.state.searchText){
         this.setState({
+          searchText: newSearchText,
           page:1
         })
       }
       this.props.getFimList(newSearchText, page);
         this.setState({
-          searchText: newSearchText,
           page
         })
       }
     
-    debouncedUpdateText = debounce(this.updatePage, 2000)
+    debouncedUpdatePage = debounce(this.updatePage, 2000)
 
   render() {
     const {options} = this.props;
@@ -71,7 +71,8 @@ export default class SearchPage extends Component {
     <Spin size="large" className = "spin"/> : 
     <React.Fragment>
     <FilmsList 
-    options={options}
+    // options={options}
+    filmList={filmList}
     addAverange ={addAverange}
     />
     <Pagination
@@ -79,14 +80,14 @@ export default class SearchPage extends Component {
     onChange = {this.handleChange}
     showSizeChanger ={false}
     defaultCurrent={this.state.page}
-    defaultPageSize ={20}
+    defaultPageSize = {20}
     />
     </React.Fragment>
     const films = !filmNotFound ? loadList: null;
     return (
     <React.Fragment>
     <SearchInput 
-    updateText={this.debouncedUpdateText}/>
+    updateText={this.debouncedUpdatePage}/>
     {filmNotFound}
     {films}
     </React.Fragment>

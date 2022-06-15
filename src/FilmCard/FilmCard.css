@@ -36,20 +36,18 @@
 }
 .card-average{
     position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     top:11px;
     right: 8px;
-    display: inline-block;
     border: 2px solid rgba(233, 209, 0, 1);
     border-radius: 100%;
     font-size: 12px;
     width: 30px;
     height: 30px;
 }
-.card-average-text{
-    position: absolute;
-    left: 4px;
-    top: 4px;
-}
+
 .card-date {
     color: #827E7E;
     font-family: 'Open Sans', sans-serif;

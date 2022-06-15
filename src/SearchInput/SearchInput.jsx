@@ -12,6 +12,7 @@ export default class SearchInput extends Component {
         })
     }; 
     handleChange(){
+      console.log('this.prrrrrrrrrrr', this.props);
         this.props.updateText(this.state.searchValue);
     }
   

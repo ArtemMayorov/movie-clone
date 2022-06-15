@@ -16,32 +16,35 @@ export default class FilmCard extends Component {
         srcForImg: '#',
         title: 'loading',
         average: 0,
+        userAverage:0,
         data: null,
         text: '',
         key: 1,
     };
     
     componentDidMount() {
-        const {original_title, vote_average, release_date, overview, id, backdrop_path } = this.props.filmProps;
+        const {original_title, vote_average, release_date, overview, id, backdrop_path, userAverage } = this.props.filmProps;
         this.idFilm = id
         
         this.setState({
             srcForImg: this.filmServece.getImage(backdrop_path),
             title: original_title,
-            // average: vote_average,
+            average: vote_average,
             data: release_date,
             text: overview,
             key: id,
+            userAverage
         })
     }
       
     render() {
     const {Title, Paragraph} = Typography    
-    const handleChange = (average)=>{
+
+    const handleChange = (userAverage)=>{
         this.setState(()=>{
-            return {average}
+            return {userAverage}
         });
-    this.props.addAverange(this.idFilm, average)
+    this.props.addAverange(this.props.filmProps, userAverage)
     };
 
     const formatTime = (releaseDate ) => {
@@ -66,6 +69,17 @@ export default class FilmCard extends Component {
         }
         return clippedText;
     };
+    const ratedCards = this.filmServece.getRatedMovies();
+
+    const res = ratedCards.filter(elem => {
+        console.log('elem.id', elem.id)
+        console.log('this.state.key',this.state.key)
+        return elem.id === this.state.key
+    });
+
+    console.log('res', res)
+   const aver = res.length > 0 ? res[0]["userAverage"] : 0;
+    
     return (
       <div key={this.state.id} className='film-card'>
           <Row className='card-container'>
@@ -92,9 +106,10 @@ export default class FilmCard extends Component {
               {/* <Rate className = 'card-stars' key={this.state.average} count ={10} disabled ={true} allowHalf defaultValue = {this.state.average}/> */}
               <Rate 
                className = 'card-stars'
-               key={this.state.average} count ={10}
+                
+               key={this.state.key} count ={10}
                 allowHalf
-                defaultValue = {this.state.average}
+                defaultValue = {aver}
                 onChange = {handleChange}
                 />
               </Col>

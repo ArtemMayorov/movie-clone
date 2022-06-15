@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import { includes,  uniqBy, merge,mergeWith } from "lodash" 
 import NoInternetConnection from '../services/NoInternetConnection';
 import './App.css'
 import FilmServece from '../services/servece';
@@ -37,13 +37,38 @@ export default class App extends Component {
         })
     };
 
-    addAverange = (id, average) => {
+    addAverange = (film, average) => {
+      let userAverage = 0;
+      if(userAverage !== average){
+        userAverage = average
+      };
       this.setState(() =>{
       return {
-        dataAverage:[...this.state.dataAverage, {[id]: average}]
-      }})
-      localStorage.setItem('dataAverage', JSON.stringify(this.state.dataAverage))
+        dataAverage:[...this.state.dataAverage,{ ...film, userAverage}]
+      }
+    })
+      console.log('dataAverage', this.state.dataAverage);
+
+      localStorage.setItem('dataAverage', JSON.stringify(uniqBy([ ...this.state.dataAverage,{ ...film, userAverage} ], 'id')))
     }
+
+
+    // addAverange = (film, average) => {
+      
+    //   if()
+
+    //   let userAverage = 0;
+    //   if(userAverage !== average){
+    //     userAverage = average;
+    //   }
+    //   this.setState(() =>{
+    //   return {
+    //     dataAverage:[{ ...film, userAverage}]
+    //     // dataAverage:[ ...this.state.dataAverage, film]
+    //   }})
+    //   console.log('dataAverage', this.state.dataAverage);
+    //   localStorage.setItem('dataAverage', JSON.stringify([ { ...film, userAverage} ]))
+    // }
 
      getFilmList = async(filmName = 'return', page = 1)=>{
         this.setState({
@@ -51,7 +76,9 @@ export default class App extends Component {
         })
         await this.filmServece.getFilms(filmName, page)
         .then(filmsCollection => {
+      
             this.setState({
+                // filmList: test, 
                 filmList: filmsCollection.results, 
                 filmListPage: filmsCollection.page,
                 totalFilmsPage: filmsCollection.total_pages,
@@ -65,7 +92,6 @@ export default class App extends Component {
       this.setState(()=>{
         return {selectedPage: page}
       })
-      console.log(this.state.selectedPage);
     }
   
   render() {
@@ -89,3 +115,74 @@ export default class App extends Component {
     );
   }
 }
+
+
+// addAverange = (film, average) => {
+//   let userAverage = 0;
+//   if(userAverage !== average){
+//     userAverage = average
+//   };
+
+//   if(this.state.dataAverage.length !== 0) {
+//     this.setState({
+//       dataAverage:[],
+//     })
+//    const res = this.state.dataAverage.map(lastFilm => {
+
+//       if(lastFilm.id === film.id) {
+//         console.log('1');
+//         if(lastFilm.userAverage !== userAverage){
+//           console.log('2');
+//           return {...lastFilm, userAverage}
+//         }
+//         console.log('3');
+//         return {...lastFilm}
+//       }
+//       console.log('4');
+
+//       return {...film, userAverage};
+
+//     })
+//     console.log('res', res);
+    
+//     this.setState(() =>{
+//       return {
+//         dataAverage:[...this.state.dataAverage,...res]
+//       }
+//     })
+    
+//   }else{
+//     this.setState(() =>{
+//       return {
+//         dataAverage:[...this.state.dataAverage,{...film, userAverage}]
+//       }
+//     })
+//   }
+
+// //   this.setState(() =>{
+// //   return {
+// //     dataAverage:[...this.state.dataAverage,{ ...film, userAverage}]
+// //   }
+// // })
+  
+
+//   console.log('dataAverage', this.state.dataAverage);
+
+//   localStorage.setItem('dataAverage', JSON.stringify([ ...this.state.dataAverage,{ ...film, userAverage} ]))
+// }
+// addAverange = (film, average) => {
+  
+//   if()
+
+//   let userAverage = 0;
+//   if(userAverage !== average){
+//     userAverage = average;
+//   }
+//   this.setState(() =>{
+//   return {
+//     dataAverage:[{ ...film, userAverage}]
+//     // dataAverage:[ ...this.state.dataAverage, film]
+//   }})
+//   console.log('dataAverage', this.state.dataAverage);
+//   localStorage.setItem('dataAverage', JSON.stringify([ { ...film, userAverage} ]))
+// }
