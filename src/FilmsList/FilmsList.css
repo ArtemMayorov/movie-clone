@@ -1,8 +1,8 @@
 .grid-container{
     padding: 19px 32px;
-    /* display: grid; */
+    display: grid;
     grid-template-columns: 1fr 1fr ;
-    grid-template-rows: repeat(6, 1fr);
+
     column-gap: 36px;
     row-gap:35px;
     justify-content: center;

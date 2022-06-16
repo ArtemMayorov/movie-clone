@@ -1,41 +1,65 @@
-import React, { Component } from 'react'
-import FilmsList from '../FilmsList/FilmsList'
+import React, { Component } from 'react';
+import { Empty, Pagination, Spin } from 'antd'
+import { uniqBy } from 'lodash'
+import { fil } from 'date-fns/locale'
+
 import FilmServece from '../services/servece';
-import {Empty} from 'antd'
-import { uniqBy } from "lodash"
+import FilmsList from '../FilmsList/FilmsList';
 
 export default class RatedPage extends Component {
-    filmServece = new FilmServece();
-    
+  filmServece = new FilmServece();
+  state = {
+    minValue: 0,
+    maxValue: 10,
+    page: 1,
+  };
+
   render() {
-    const {options} = this.props;
-    // localStorage.clear()
     const filmList = this.filmServece.getRatedMovies();
-    // const filmList = _.uniqBy(this.filmServece.getRatedMovies(), 'id');
-    console.log('lisssst', filmList);
-    console.log('test', _.uniqBy(filmList,"id") )
-    // console.log('options', options);
-    if(!filmList){
-        return(
-            <Empty
-            image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
-            imageStyle={{
-              margin:40,
-              height: 60,
-            }}
-            description={
-              <span>
-                Movies not found 
-              </span>
-            }/>
-        )
+
+    const handlePage = (value) => {
+      if (value <= 1) {
+        this.setState({
+          minValue: 0,
+          maxValue: 10,
+          page: 1,
+        });
+      } else {
+        this.setState({
+          minValue: (value - 1) * 10,
+          maxValue: value * 10,
+          page: value,
+        });
+      }
     }
 
-
+    if (!filmList) {
+      return (
+        <Empty
+          image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+          imageStyle={{
+            margin: 40,
+            height: 60,
+          }}
+          description={<span>Movies not found</span>}
+        />
+      );
+    }
     return (
-      <FilmsList
-      filmList = {filmList}
-      />
+      <React.Fragment>
+        <FilmsList
+          filmList={filmList.slice(this.state.minValue, this.state.maxValue)}
+          // filmList = {filmList}
+        />
+        <Pagination
+          total={filmList.length}
+          onChange={handlePage}
+          showSizeChanger={false}
+          defaultCurrent={1}
+          // defaultCurrent={this.props.page}
+          defaultPageSize={10}
+        />
+      </React.Fragment>
     )
   }
 }

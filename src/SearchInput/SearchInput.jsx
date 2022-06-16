@@ -4,26 +4,25 @@ import './SearchInput.css'
 import { Input } from 'antd';
 export default class SearchInput extends Component {
   state = {
-      searchValue: ''
-    }
-    getInputValue(text){
-        this.setState({
-            searchValue: text
-        })
-    }; 
-    handleChange(){
-      console.log('this.prrrrrrrrrrr', this.props);
-        this.props.updateText(this.state.searchValue);
-    }
-  
+    searchValue: '',
+  };
+  getInputValue(text) {
+    this.setState({
+      searchValue: text,
+    });
+  }
+  handleChange() {
+    this.props.updateText(this.state.searchValue);
+  }
+
   render() {
     return (
       <Input
-      onKeyUp = {() => this.handleChange()}
-      onChange = {(e)=> this.getInputValue(e.target.value)}
-      value = {this.state.searchValue}
-      placeholder = 'Type to search...'
-      maxLength = {50}
+        onKeyUp={() => this.handleChange()}
+        onChange={(e) => this.getInputValue(e.target.value)}
+        value={this.state.searchValue}
+        placeholder="Type to search..."
+        maxLength={50}
       />
     )
   }
