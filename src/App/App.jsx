@@ -6,7 +6,7 @@ import FilmServece from '../services/servece'
 import SearchPage from '../SearchPage/SearchPage'
 import MainHeader from '../MainHeader/MainHeader'
 import RatedPage from '../RatedPage/RatedPage'
-
+import { ServeceProvider } from '../services/servicesContext';
 
 export default class App extends Component {
   constructor(props) {
@@ -24,7 +24,8 @@ export default class App extends Component {
     dataAverage:[],
     selectedPage: 'search',
     selectedPageNumber: 1,
-    searchText:'return'
+    searchText:'return',
+    gengesList: null,
   };
 
   componentDidMount(){
@@ -38,9 +39,7 @@ export default class App extends Component {
   };
 
   componentDidUpdate(lastState, prevState){
-
       if(lastState.selectedPage == 'search' ){
-      console.log('componentDidUpdate2')
         this.getFilmList(this.state.searchText,this.state.selectedPageNumber)
       }
   };
@@ -72,6 +71,8 @@ export default class App extends Component {
       loadingList:true,
       selectedPageNumber: page
     })
+    const gengesList = await this.filmServece.getGenres()
+    console.log('genresList', gengesList);
     await this.filmServece.getFilms(filmName, page)
       .then(filmsCollection => {
         this.setState({
@@ -81,6 +82,7 @@ export default class App extends Component {
           totalFilms: filmsCollection.total_results,
           loading:false,
           loadingList:false,
+          gengesList : gengesList
         })
       }).catch(this.onError)
   }
@@ -94,17 +96,23 @@ export default class App extends Component {
     console.log('selectedPageNumber', this.state.selectedPageNumber);
     const page =
       this.state.selectedPage === 'search' ? 
+      <ServeceProvider value={this.state.gengesList}>
       <SearchPage 
         setSearchText = {this.setSearchText} 
         getFimList = {this.getFilmList}
         addAverange = {this.addAverange}
-        options={this.state}/> 
-      : <RatedPage
+        options={this.state}
+        /> 
+        </ServeceProvider>
+      :<ServeceProvider value={this.state.gengesList}>
+       <RatedPage
         options={this.state}
       />
+      </ServeceProvider>
     return (
       <section className="container">
-        <MainHeader getSelectedPage={this.getSelectedPage} />
+        <MainHeader getSelectedPage={this.getSelectedPage} 
+        />
         <NoInternetConnection />
         {page}
       </section>

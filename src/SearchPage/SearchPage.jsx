@@ -90,7 +90,7 @@ export default class SearchPage extends Component {
           description={<span>Movies not found</span>}
         />
       ) : null;
-
+          console.log('selectedPageNumberProps', this.props);
     const loadList = loadingList ? (
       <Spin size="large" className="spin" />
     ) : (
@@ -104,7 +104,7 @@ export default class SearchPage extends Component {
           total={totalFilms}
           onChange={this.updatePage}
           showSizeChanger={false}
-          defaultCurrent={this.props.selectedPageNumber}
+          defaultCurrent={this.props.options.selectedPageNumber}
           // defaultCurrent={this.state.page}
           defaultPageSize={20}
         />

@@ -3,8 +3,7 @@ import 'antd/dist/antd.css';
 import './FilmCard.css'
 import { Col, Row, Typography, Tag, Rate, Image } from 'antd'
 import { format } from 'date-fns';
-import { id } from 'date-fns/locale';
-
+import { ServeceConsumer } from '../services/servicesContext';
 import FilmServece from '../services/servece'
 
 export default class FilmCard extends Component {
@@ -23,7 +22,7 @@ export default class FilmCard extends Component {
   }
 
   componentDidMount() {
-    const { original_title, vote_average, release_date, overview, id, backdrop_path, userAverage } =
+    const { original_title, vote_average, release_date, overview, id, backdrop_path, userAverage, genre_ids } =
       this.props.filmProps;
     this.idFilm = id
 
@@ -35,6 +34,7 @@ export default class FilmCard extends Component {
       text: overview,
       key: id,
       userAverage,
+      genreIds: genre_ids,
     });
   }
 
@@ -103,13 +103,26 @@ export default class FilmCard extends Component {
                 <span className="card-average-text">{this.state.average}</span>
               </div>
             </Typography>
+
             <div className="card-date">{formatTime(this.state.data)}</div>
-            <Tag className="card-genre">
-              <span className="card-genre-text">Action</span>
-            </Tag>
-            <Tag className="card-genre">
-              <span className="card-genre-text">Drama</span>
-            </Tag>
+            <ServeceConsumer>
+              {
+                (consumer) => {
+                  if(this.state.genreIds){
+                   return consumer.map(({id, name}) => {
+                        if(this.state.genreIds.find(genreId => genreId === id)) {
+                          return (
+                            <Tag className="card-genre">
+                              <span className="card-genre-text">{name}</span>
+                            </Tag>
+                            )
+                        }
+                    })
+                  }
+                }
+              }
+            
+            </ServeceConsumer>
             <Paragraph className="card-description">
               <span className="card-description-text">{formatText(this.state.text, 'description')}</span>
             </Paragraph>
