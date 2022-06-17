@@ -10,8 +10,7 @@ export default class RatedPage extends Component {
   filmServece = new FilmServece();
   state = {
     minValue: 0,
-    maxValue: 10,
-    page: 1,
+    maxValue: 20,
   };
 
   render() {
@@ -21,14 +20,12 @@ export default class RatedPage extends Component {
       if (value <= 1) {
         this.setState({
           minValue: 0,
-          maxValue: 10,
-          page: 1,
+          maxValue: 20,
         });
       } else {
         this.setState({
-          minValue: (value - 1) * 10,
-          maxValue: value * 10,
-          page: value,
+          minValue: (value - 1) * 20,
+          maxValue: value * 20,
         });
       }
     }
@@ -49,16 +46,17 @@ export default class RatedPage extends Component {
       <React.Fragment>
         <FilmsList
           filmList={filmList.slice(this.state.minValue, this.state.maxValue)}
-          // filmList = {filmList}
         />
+        <div className='searchPage-container'>
         <Pagination
           total={filmList.length}
           onChange={handlePage}
           showSizeChanger={false}
           defaultCurrent={1}
           // defaultCurrent={this.props.page}
-          defaultPageSize={10}
+          defaultPageSize={20}
         />
+        </div>
       </React.Fragment>
     )
   }

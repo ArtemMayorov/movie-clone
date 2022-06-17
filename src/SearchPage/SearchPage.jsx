@@ -4,6 +4,7 @@ import { Spin, Alert, Pagination, Empty } from 'antd'
 
 import FilmsList from '../FilmsList/FilmsList';
 import SearchInput from '../SearchInput/SearchInput'
+import './SearchPage.css'
 import 'antd/dist/antd.css';
 
 export default class SearchPage extends Component {
@@ -37,30 +38,6 @@ export default class SearchPage extends Component {
       page
     });
     };
-
-
-    
-
-  // updatePage = (newSearchText, page) => {
-  //   console.log('updatePage');
-  //   this.setState(()=> {
-  //   return {
-  //     page
-  //   }
-  //   });
-  //   console.log('newSearchText', newSearchText);
-  //   if (newSearchText.trim() === '') return;
-  //   if (newSearchText !== this.state.searchText) {
-  //     this.setState({
-  //       searchText: newSearchText,
-  //       page: 1,
-  //     });
-  //     return this.props.getFimList(newSearchText, 1);
-  //   }
-  //   console.log('this.state.page', this.state.page)
-  //   this.props.getFimList(this.state.searchText, page);
-    
-  // };
 
   debouncedUpdatePage = debounce(this.updatePage, 2000);
   debouncedHandleInput = debounce(this.handleInput, 2000);
@@ -96,18 +73,19 @@ export default class SearchPage extends Component {
     ) : (
       <React.Fragment>
         <FilmsList
-          // options={options}
           filmList={filmList}
           addAverange={addAverange}
         />
+        <div className='searchPage-container'>
         <Pagination
+          className='searchPage-pagination'
           total={totalFilms}
           onChange={this.updatePage}
           showSizeChanger={false}
           defaultCurrent={this.props.options.selectedPageNumber}
-          // defaultCurrent={this.state.page}
           defaultPageSize={20}
         />
+          </div>
       </React.Fragment>
     )
     const films = !filmNotFound ? loadList : null;

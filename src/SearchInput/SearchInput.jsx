@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import 'antd/dist/antd.css';
 import './SearchInput.css'
+import 'antd/dist/antd.css';
 import { Input } from 'antd';
 export default class SearchInput extends Component {
   state = {
@@ -18,6 +18,7 @@ export default class SearchInput extends Component {
   render() {
     return (
       <Input
+        className ='search-input'
         onKeyUp={() => this.handleChange()}
         onChange={(e) => this.getInputValue(e.target.value)}
         value={this.state.searchValue}
