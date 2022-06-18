@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { includes, uniqBy, merge, mergeWith } from 'lodash';
+import { uniqBy } from 'lodash';
 import NoInternetConnection from '../services/NoInternetConnection'
 import './App.css';
 import FilmServece from '../services/servece'
@@ -9,17 +9,13 @@ import RatedPage from '../RatedPage/RatedPage'
 import { ServeceProvider } from '../services/servicesContext';
 
 export default class App extends Component {
-  constructor(props) {
-    super()
-  };
   filmServece = new FilmServece()
     state = {
     filmList: null,
     loading: true,
-    loadingList: false,
+    loadingSearchList: false,
     error: false,
     filmListPage: null,
-    totalFilmsPage: null,
     totalFilms: null,
     dataAverage:[],
     selectedPage: 'search',
@@ -38,15 +34,9 @@ export default class App extends Component {
     });
   };
 
-  componentDidUpdate(lastState, prevState){
-      if(lastState.selectedPage == 'search' ){
-        this.getFilmList(this.state.searchText,this.state.selectedPageNumber)
-      }
-  };
-
-  onError = (err) => {
-    console.log('err',err)
-        this.setState({
+  onError = () => {
+      console.log('onErr');
+      this.setState({
       error: true,
       loading: false,
     })
@@ -54,7 +44,7 @@ export default class App extends Component {
 
     addAverange = (film, average) => {
     let userAverage = 0
-      if(userAverage !== average){
+    if(userAverage !== average){
       userAverage = average
     };
     this.setState(() =>{
@@ -62,26 +52,24 @@ export default class App extends Component {
         dataAverage: [...this.state.dataAverage, { ...film, userAverage }],
       };
     });
-
-    localStorage.setItem('dataAverage', JSON.stringify(uniqBy([ ...this.state.dataAverage,{ ...film, userAverage} ], 'id')))
+    this.filmServece.setRatedMovies(uniqBy([ ...this.state.dataAverage,{ ...film, userAverage} ], 'id'))
   }
 
   getFilmList = async(filmName = 'return', page = 1)=>{
     this.setState({
-      loadingList:true,
+      loadingSearchList:true,
       selectedPageNumber: page
     })
     const gengesList = await this.filmServece.getGenres()
-    console.log('genresList', gengesList);
+    .then().catch(this.onError)
     await this.filmServece.getFilms(filmName, page)
       .then(filmsCollection => {
         this.setState({
           filmList: filmsCollection.results, 
           filmListPage: filmsCollection.page,
-          totalFilmsPage: filmsCollection.total_pages,
           totalFilms: filmsCollection.total_results,
           loading:false,
-          loadingList:false,
+          loadingSearchList:false,
           gengesList : gengesList
         })
       }).catch(this.onError)
@@ -93,7 +81,6 @@ export default class App extends Component {
   }
 
   render() {
-    console.log('selectedPageNumber', this.state.selectedPageNumber);
     const page =
       this.state.selectedPage === 'search' ? 
       <ServeceProvider value={this.state.gengesList}>

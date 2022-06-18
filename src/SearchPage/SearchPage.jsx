@@ -1,27 +1,23 @@
 import React, { Component } from 'react'
 import { debounce } from 'lodash'
 import { Spin, Alert, Pagination, Empty } from 'antd'
-
 import FilmsList from '../FilmsList/FilmsList';
 import SearchInput from '../SearchInput/SearchInput'
 import './SearchPage.css'
 import 'antd/dist/antd.css';
+import Loading from '../services/Loading';
+import Error from '../services/Error'
 
 export default class SearchPage extends Component {
-
   state = {
     searchText: 'return',
     page: 1,
   };
-
   handleChange = (page) => {
-    console.log('handleChange');
     this.updatePage(this.state.searchText, page)
-    
   };
 
   handleInput = (newSearchText) => {
-    console.log('handleInput');
     if (newSearchText.trim() === '') return;
       this.setState({
         searchText: newSearchText,
@@ -32,32 +28,28 @@ export default class SearchPage extends Component {
   };
 
   updatePage = (page) => {
-
     this.props.getFimList(this.state.searchText, page);    
     this.setState({
       page
     });
     };
-
-  debouncedUpdatePage = debounce(this.updatePage, 2000);
   debouncedHandleInput = debounce(this.handleInput, 2000);
 
   render() {
-    console.log('state', this.state)
     const {
       addAverange,
-      options: { loading, error, filmList, loadingList, totalFilmsPage, totalFilms, filmListPage,selectedPageNumber },
+      options: { loading, error, filmList, loadingSearchList, totalFilms },
     } = this.props;
 
     if (loading) {
-      return <Spin size="large" className="spin" />;
+      return <Loading/>
     }
     if (error) {
-      return <Alert message="Oops..." description="Something went wrong :(" type="error" />;
+      return <Error/>
     }
 
     const filmNotFound =
-      filmList.length === 0 && !loadingList ? (
+      filmList.length === 0 && !loadingSearchList ? (
         <Empty
           image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
           imageStyle={{
@@ -67,8 +59,7 @@ export default class SearchPage extends Component {
           description={<span>Movies not found</span>}
         />
       ) : null;
-          console.log('selectedPageNumberProps', this.props);
-    const loadList = loadingList ? (
+    const loadList = loadingSearchList ? (
       <Spin size="large" className="spin" />
     ) : (
       <React.Fragment>

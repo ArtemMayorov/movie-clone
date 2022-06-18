@@ -13,7 +13,22 @@ export default class MainHeader extends Component {
     })
     this.props.getSelectedPage(page.key);
   };
+
   render() {
+    const menuItems = [
+      {
+        key: 'search',
+        className: 'menu-item',
+        label: 'search'
+
+      },
+      {
+        key: 'rated',
+        className: 'menu-item',
+        label:'rated'
+      }
+    ];
+
     return (
       <Menu
         selectedKeys={[this.state.selectedPage]}
@@ -21,14 +36,8 @@ export default class MainHeader extends Component {
         className="menu-container"
         mode="horizontal"
         onSelect={this.handleSelect}
-      >
-        <Menu.Item key="search" className="menu-item ">
-          Search
-        </Menu.Item>
-        <Menu.Item key="rated" className="menu-item">
-          Rated
-        </Menu.Item>
-      </Menu>
+        items={menuItems}
+      />
     )
   }
 }

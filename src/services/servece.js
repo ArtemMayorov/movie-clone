@@ -3,7 +3,6 @@ import plug from './theMovie.svg'
 export default class FilmServece {
      src = {plug}
     _apiBase = 'https://api.themoviedb.org/3';
-    // _apiKey = 'api_key=6c8fa39627c89b3c87ca11fd477aab8888c&' // кривой 
     _apiKey = 'api_key=6c8fa39627c89b3c87ca11fd477aab8c&'
     _apiImageBase = 'https://image.tmdb.org/t/p/w500'
     constructor(){};
@@ -30,6 +29,9 @@ export default class FilmServece {
     getRatedMovies(){
        return JSON.parse(localStorage.getItem('dataAverage'));
     }
+    setRatedMovies(filmList){
+        localStorage.setItem('dataAverage', JSON.stringify(filmList))
+    };
     async getGenres(){
         const res = await this.getResource(`/genre/movie/list?${this._apiKey}language=en-US`, 'genres')
         return res.genres

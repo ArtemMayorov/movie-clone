@@ -104,13 +104,12 @@
         row-gap: 20px;
         padding: 10px 0px 40px 0;
     }
-    .menu-container{
-        margin: 0 0 17px 0;
-    }
+   
     .film-card{
         position: relative;
         width: 387px;
         height:245px;
+        margin: 0 auto;
     }
     .card-image{
         float: left;

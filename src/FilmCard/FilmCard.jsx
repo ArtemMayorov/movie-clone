@@ -1,15 +1,12 @@
 import React, { Component } from 'react'
 import 'antd/dist/antd.css';
 import './FilmCard.css'
-import { Col, Row, Typography, Tag, Rate, Image } from 'antd'
+import { Col, Row, Typography, Tag, Rate } from 'antd'
 import { format } from 'date-fns';
 import { ServeceConsumer } from '../services/servicesContext';
 import FilmServece from '../services/servece'
 
 export default class FilmCard extends Component {
-  constructor(props) {
-    super();
-  }
   filmServece = new FilmServece();
   state = {
     srcForImg: '#',
@@ -23,9 +20,8 @@ export default class FilmCard extends Component {
 
   componentDidMount() {
     const { original_title, vote_average, release_date, overview, id, backdrop_path, userAverage, genre_ids } =
-      this.props.filmProps;
+    this.props.filmProps;
     this.idFilm = id
-
     this.setState({
       srcForImg: this.filmServece.getImage(backdrop_path),
       title: original_title,
@@ -126,7 +122,6 @@ export default class FilmCard extends Component {
             <Paragraph className="card-description">
               <span className="card-description-text">{formatText(this.state.text, 'description')}</span>
             </Paragraph>
-            {/* <Rate className = 'card-stars' key={this.state.average} count ={10} disabled ={true} allowHalf defaultValue = {this.state.average}/> */}
             <Rate
               className="card-stars"
               key={this.state.key}

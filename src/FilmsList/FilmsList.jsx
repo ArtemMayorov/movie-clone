@@ -6,17 +6,11 @@ import 'antd/dist/antd.css';
 import './FilmsList.css'
 
 export default class FilmsList extends Component {
-  constructor(props) {
-    super();
-  }
-
   state = {
     selectPage: 'search',
   };
   render() {
-    console.log('this.props', this.props);
     const { filmList } = this.props
-    // const { filmList} = this.props.options;
     const { addAverange } = this.props
 
     const filmCard = filmList.map((film) => {

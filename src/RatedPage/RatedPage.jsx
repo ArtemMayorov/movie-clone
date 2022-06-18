@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { Empty, Pagination, Spin } from 'antd'
-import { uniqBy } from 'lodash'
-import { fil } from 'date-fns/locale'
+import { Empty, Pagination } from 'antd'
 
 import FilmServece from '../services/servece';
 import FilmsList from '../FilmsList/FilmsList';
@@ -53,7 +51,6 @@ export default class RatedPage extends Component {
           onChange={handlePage}
           showSizeChanger={false}
           defaultCurrent={1}
-          // defaultCurrent={this.props.page}
           defaultPageSize={20}
         />
         </div>
