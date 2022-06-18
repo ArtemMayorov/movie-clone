@@ -5,7 +5,8 @@ import { Spin, Pagination, Empty } from 'antd';
 import FilmsList from '../FilmsList/FilmsList';
 import SearchInput from '../SearchInput/SearchInput';
 import './SearchPage.css';
-import 'antd/dist/antd.min.css';
+import 'antd/dist/antd.css';
+
 import Loading from '../services/Loading';
 import Error from '../services/Error';
 

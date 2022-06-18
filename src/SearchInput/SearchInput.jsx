@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './SearchInput.css';
-import 'antd/dist/antd.min.css';
+import 'antd/dist/antd.css';
 import { Input } from 'antd';
 
 export default class SearchInput extends Component {
