@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Alert } from 'antd';
 
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.min.css';
 
 const NoInternetConnection = () => {
   const [isOnline, setOnline] = useState(true);

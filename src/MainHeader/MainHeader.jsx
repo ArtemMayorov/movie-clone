@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Menu } from 'antd';
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.min.css';
 import './MainHeader.css';
 
 export default class MainHeader extends Component {

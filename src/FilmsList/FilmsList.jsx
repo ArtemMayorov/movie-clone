@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Col, Row } from 'antd';
 
 import FilmCard from '../FilmCard/FilmCard';
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.min.css';
 import './FilmsList.css';
 
 export default class FilmsList extends Component {

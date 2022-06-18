@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.min.css';
 import './FilmCard.css';
 import { Col, Row, Typography, Tag, Rate } from 'antd';
 import { format } from 'date-fns';

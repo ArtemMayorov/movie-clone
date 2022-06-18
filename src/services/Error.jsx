@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Alert } from 'antd';
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.min.css';
 
 export default class Error extends Component {
   render() {
