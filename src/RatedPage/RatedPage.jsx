@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Empty, Pagination } from 'antd'
+import { Empty, Pagination } from 'antd';
 
 import FilmServece from '../services/servece';
 import FilmsList from '../FilmsList/FilmsList';
 
 export default class RatedPage extends Component {
   filmServece = new FilmServece();
+
   state = {
     minValue: 0,
     maxValue: 20,
@@ -26,7 +27,7 @@ export default class RatedPage extends Component {
           maxValue: value * 20,
         });
       }
-    }
+    };
 
     if (!filmList) {
       return (
@@ -41,20 +42,18 @@ export default class RatedPage extends Component {
       );
     }
     return (
-      <React.Fragment>
-        <FilmsList
-          filmList={filmList.slice(this.state.minValue, this.state.maxValue)}
-        />
-        <div className='searchPage-container'>
-        <Pagination
-          total={filmList.length}
-          onChange={handlePage}
-          showSizeChanger={false}
-          defaultCurrent={1}
-          defaultPageSize={20}
-        />
+      <>
+        <FilmsList filmList={filmList.slice(this.state.minValue, this.state.maxValue)} />
+        <div className="searchPage-container">
+          <Pagination
+            total={filmList.length}
+            onChange={handlePage}
+            showSizeChanger={false}
+            defaultCurrent={1}
+            defaultPageSize={20}
+          />
         </div>
-      </React.Fragment>
-    )
+      </>
+    );
   }
 }

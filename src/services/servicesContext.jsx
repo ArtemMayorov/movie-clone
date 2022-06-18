@@ -1,4 +1,4 @@
 import React from 'react';
 
-const { Provider: ServeceProvider, Consumer: ServeceConsumer } = React.createContext()
-export { ServeceProvider, ServeceConsumer }
+const { Provider: ServeceProvider, Consumer: ServeceConsumer } = React.createContext();
+export { ServeceProvider, ServeceConsumer };

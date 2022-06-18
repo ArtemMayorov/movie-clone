@@ -1,27 +1,27 @@
-import React, { useState, useEffect } from 'react'
-import { Alert } from 'antd'
+import React, { useState, useEffect } from 'react';
+import { Alert } from 'antd';
 
-import 'antd/dist/antd.css'
+import 'antd/dist/antd.css';
+
 const NoInternetConnection = () => {
-  const [isOnline, setOnline] = useState(true)
+  const [isOnline, setOnline] = useState(true);
 
   useEffect(() => {
-    setOnline(navigator.onLine)
-  }, [])
+    setOnline(navigator.onLine);
+  }, []);
 
   window.addEventListener('online', () => {
-    setOnline(true)
+    setOnline(true);
   });
   window.addEventListener('offline', () => {
-    setOnline(false)
+    setOnline(false);
   });
   if (isOnline) {
-    return null
-  } else {
-    return (
-      <Alert className="no-internet-title" message="No Interner Connection. Please try again later." type="warning" />
-    );
+    return null;
   }
+  return (
+    <Alert className="no-internet-title" message="No Interner Connection. Please try again later." type="warning" />
+  );
 };
 
-export default NoInternetConnection
+export default NoInternetConnection;

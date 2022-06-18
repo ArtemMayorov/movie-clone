@@ -1,16 +1,15 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { Menu } from 'antd';
 import 'antd/dist/antd.css';
-import './MainHeader.css'
+import './MainHeader.css';
 
 export default class MainHeader extends Component {
   state = {
     selectedPage: 'search',
-  }
+  };
+
   handleSelect = (page) => {
-    this.setState(() => {
-      return { selectedPage: page.key };
-    })
+    this.setState(() => ({ selectedPage: page.key }));
     this.props.getSelectedPage(page.key);
   };
 
@@ -19,14 +18,13 @@ export default class MainHeader extends Component {
       {
         key: 'search',
         className: 'menu-item',
-        label: 'search'
-
+        label: 'search',
       },
       {
         key: 'rated',
         className: 'menu-item',
-        label:'rated'
-      }
+        label: 'rated',
+      },
     ];
 
     return (
@@ -38,6 +36,6 @@ export default class MainHeader extends Component {
         onSelect={this.handleSelect}
         items={menuItems}
       />
-    )
+    );
   }
 }

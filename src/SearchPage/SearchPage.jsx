@@ -1,38 +1,41 @@
-import React, { Component } from 'react'
-import { debounce } from 'lodash'
-import { Spin, Alert, Pagination, Empty } from 'antd'
+import React, { Component } from 'react';
+import { debounce } from 'lodash';
+import { Spin, Pagination, Empty } from 'antd';
+
 import FilmsList from '../FilmsList/FilmsList';
-import SearchInput from '../SearchInput/SearchInput'
-import './SearchPage.css'
+import SearchInput from '../SearchInput/SearchInput';
+import './SearchPage.css';
 import 'antd/dist/antd.css';
 import Loading from '../services/Loading';
-import Error from '../services/Error'
+import Error from '../services/Error';
 
 export default class SearchPage extends Component {
   state = {
     searchText: 'return',
     page: 1,
   };
+
   handleChange = (page) => {
-    this.updatePage(this.state.searchText, page)
+    this.updatePage(this.state.searchText, page);
   };
 
   handleInput = (newSearchText) => {
     if (newSearchText.trim() === '') return;
-      this.setState({
-        searchText: newSearchText,
-        page: 1,
-      });
-      this.props.setSearchText(newSearchText)
-      return this.props.getFimList(newSearchText, 1);
+    this.setState({
+      searchText: newSearchText,
+      page: 1,
+    });
+    this.props.setSearchText(newSearchText);
+    return this.props.getFimList(newSearchText, 1);
   };
 
   updatePage = (page) => {
-    this.props.getFimList(this.state.searchText, page);    
+    this.props.getFimList(this.state.searchText, page);
     this.setState({
-      page
+      page,
     });
-    };
+  };
+
   debouncedHandleInput = debounce(this.handleInput, 2000);
 
   render() {
@@ -42,10 +45,10 @@ export default class SearchPage extends Component {
     } = this.props;
 
     if (loading) {
-      return <Loading/>
+      return <Loading />;
     }
     if (error) {
-      return <Error/>
+      return <Error />;
     }
 
     const filmNotFound =
@@ -62,30 +65,27 @@ export default class SearchPage extends Component {
     const loadList = loadingSearchList ? (
       <Spin size="large" className="spin" />
     ) : (
-      <React.Fragment>
-        <FilmsList
-          filmList={filmList}
-          addAverange={addAverange}
-        />
-        <div className='searchPage-container'>
-        <Pagination
-          className='searchPage-pagination'
-          total={totalFilms}
-          onChange={this.updatePage}
-          showSizeChanger={false}
-          defaultCurrent={this.props.options.selectedPageNumber}
-          defaultPageSize={20}
-        />
-          </div>
-      </React.Fragment>
-    )
+      <>
+        <FilmsList filmList={filmList} addAverange={addAverange} />
+        <div className="searchPage-container">
+          <Pagination
+            className="searchPage-pagination"
+            total={totalFilms}
+            onChange={this.updatePage}
+            showSizeChanger={false}
+            defaultCurrent={this.props.options.selectedPageNumber}
+            defaultPageSize={20}
+          />
+        </div>
+      </>
+    );
     const films = !filmNotFound ? loadList : null;
     return (
-      <React.Fragment>
+      <>
         <SearchInput updateText={this.debouncedHandleInput} />
         {filmNotFound}
         {films}
-      </React.Fragment>
-    )
+      </>
+    );
   }
 }

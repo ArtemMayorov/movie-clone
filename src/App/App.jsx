@@ -1,32 +1,34 @@
 import React, { Component } from 'react';
 import { uniqBy } from 'lodash';
-import NoInternetConnection from '../services/NoInternetConnection'
+
+import NoInternetConnection from '../services/NoInternetConnection';
 import './App.css';
-import FilmServece from '../services/servece'
-import SearchPage from '../SearchPage/SearchPage'
-import MainHeader from '../MainHeader/MainHeader'
-import RatedPage from '../RatedPage/RatedPage'
+import FilmServece from '../services/servece';
+import SearchPage from '../SearchPage/SearchPage';
+import MainHeader from '../MainHeader/MainHeader';
+import RatedPage from '../RatedPage/RatedPage';
 import { ServeceProvider } from '../services/servicesContext';
 
 export default class App extends Component {
-  filmServece = new FilmServece()
-    state = {
+  filmServece = new FilmServece();
+
+  state = {
     filmList: null,
     loading: true,
     loadingSearchList: false,
     error: false,
     filmListPage: null,
     totalFilms: null,
-    dataAverage:[],
+    dataAverage: [],
     selectedPage: 'search',
     selectedPageNumber: 1,
-    searchText:'return',
+    searchText: 'return',
     gengesList: null,
   };
 
-  componentDidMount(){
-    this.getFilmList(this.state.searchText,this.state.selectedPageNumber)
-    }
+  componentDidMount() {
+    this.getFilmList(this.state.searchText, this.state.selectedPageNumber);
+  }
 
   setSearchText = (text) => {
     this.setState({
@@ -35,74 +37,71 @@ export default class App extends Component {
   };
 
   onError = () => {
-      console.log('onErr');
-      this.setState({
+    console.log('onErr');
+    this.setState({
       error: true,
       loading: false,
-    })
-  }
-
-    addAverange = (film, average) => {
-    let userAverage = 0
-    if(userAverage !== average){
-      userAverage = average
-    };
-    this.setState(() =>{
-      return {
-        dataAverage: [...this.state.dataAverage, { ...film, userAverage }],
-      };
     });
-    this.filmServece.setRatedMovies(uniqBy([ ...this.state.dataAverage,{ ...film, userAverage} ], 'id'))
-  }
+  };
 
-  getFilmList = async(filmName = 'return', page = 1)=>{
+  addAverange = (film, average) => {
+    let userAverage = 0;
+    if (userAverage !== average) {
+      userAverage = average;
+    }
+    this.setState(() => ({
+      dataAverage: [...this.state.dataAverage, { ...film, userAverage }],
+    }));
+    this.filmServece.setRatedMovies(uniqBy([...this.state.dataAverage, { ...film, userAverage }], 'id'));
+  };
+
+  getFilmList = async (filmName = 'return', page = 1) => {
     this.setState({
-      loadingSearchList:true,
-      selectedPageNumber: page
-    })
-    const gengesList = await this.filmServece.getGenres()
-    .then().catch(this.onError)
-    await this.filmServece.getFilms(filmName, page)
-      .then(filmsCollection => {
+      loadingSearchList: true,
+      selectedPageNumber: page,
+    });
+    const gengesList = await this.filmServece.getGenres().then().catch(this.onError);
+    await this.filmServece
+      .getFilms(filmName, page)
+      .then((filmsCollection) => {
         this.setState({
-          filmList: filmsCollection.results, 
+          filmList: filmsCollection.results,
           filmListPage: filmsCollection.page,
           totalFilms: filmsCollection.total_results,
-          loading:false,
-          loadingSearchList:false,
-          gengesList : gengesList
-        })
-      }).catch(this.onError)
-  }
-    getSelectedPage =(page)=>{
-    this.setState(()=>{
-      return {selectedPage: page}
-    })
-  }
+          loading: false,
+          loadingSearchList: false,
+          gengesList,
+        });
+      })
+      .catch(this.onError);
+  };
+
+  getSelectedPage = (page) => {
+    this.setState(() => ({ selectedPage: page }));
+  };
 
   render() {
     const page =
-      this.state.selectedPage === 'search' ? 
-      <ServeceProvider value={this.state.gengesList}>
-      <SearchPage 
-        setSearchText = {this.setSearchText} 
-        getFimList = {this.getFilmList}
-        addAverange = {this.addAverange}
-        options={this.state}
-        /> 
+      this.state.selectedPage === 'search' ? (
+        <ServeceProvider value={this.state.gengesList}>
+          <SearchPage
+            setSearchText={this.setSearchText}
+            getFimList={this.getFilmList}
+            addAverange={this.addAverange}
+            options={this.state}
+          />
         </ServeceProvider>
-      :<ServeceProvider value={this.state.gengesList}>
-       <RatedPage
-        options={this.state}
-      />
-      </ServeceProvider>
+      ) : (
+        <ServeceProvider value={this.state.gengesList}>
+          <RatedPage options={this.state} />
+        </ServeceProvider>
+      );
     return (
       <section className="container">
-        <MainHeader getSelectedPage={this.getSelectedPage} 
-        />
+        <MainHeader getSelectedPage={this.getSelectedPage} />
         <NoInternetConnection />
         {page}
       </section>
-    )
+    );
   }
 }

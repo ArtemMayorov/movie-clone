@@ -1,13 +1,15 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import 'antd/dist/antd.css';
-import './FilmCard.css'
-import { Col, Row, Typography, Tag, Rate } from 'antd'
+import './FilmCard.css';
+import { Col, Row, Typography, Tag, Rate } from 'antd';
 import { format } from 'date-fns';
+
 import { ServeceConsumer } from '../services/servicesContext';
-import FilmServece from '../services/servece'
+import FilmServece from '../services/servece';
 
 export default class FilmCard extends Component {
   filmServece = new FilmServece();
+
   state = {
     srcForImg: '#',
     title: 'loading',
@@ -16,12 +18,12 @@ export default class FilmCard extends Component {
     data: null,
     text: '',
     key: 1,
-  }
+  };
 
   componentDidMount() {
     const { original_title, vote_average, release_date, overview, id, backdrop_path, userAverage, genre_ids } =
-    this.props.filmProps;
-    this.idFilm = id
+      this.props.filmProps;
+    this.idFilm = id;
     this.setState({
       srcForImg: this.filmServece.getImage(backdrop_path),
       title: original_title,
@@ -35,25 +37,23 @@ export default class FilmCard extends Component {
   }
 
   render() {
-    const { Title, Paragraph } = Typography
+    const { Title, Paragraph } = Typography;
 
     const handleChange = (userAverage) => {
-      this.setState(() => {
-        return { userAverage };
-      })
-      this.props.addAverange(this.props.filmProps, userAverage)
+      this.setState(() => ({ userAverage }));
+      this.props.addAverange(this.props.filmProps, userAverage);
     };
 
     const formatTime = (releaseDate) => {
       if (!releaseDate) releaseDate = '0000-00-00';
       const dateArguments = releaseDate.split('-');
       const [y, m, d] = dateArguments;
-      return format(new Date(y, m, d), 'MMMM d, Y')
-    }
+      return format(new Date(y, m, d), 'MMMM d, Y');
+    };
 
     const formatText = (textForCard, section) => {
       if (!textForCard) textForCard = 'No description';
-      let clippedText = textForCard
+      let clippedText = textForCard;
       if (textForCard.length >= 53) {
         clippedText = textForCard.split(' ');
         if (section === 'title') {
@@ -62,27 +62,25 @@ export default class FilmCard extends Component {
           clippedText = clippedText.slice(0, 20);
         }
         clippedText = clippedText.join(' ');
-        clippedText = `${clippedText} ...`
+        clippedText = `${clippedText} ...`;
       }
       return clippedText;
-    }
+    };
     const ratedCards = this.filmServece.getRatedMovies();
 
-    const res = ratedCards.filter((elem) => {
-      return elem.id === this.state.key
-    });
+    const res = ratedCards.filter((elem) => elem.id === this.state.key);
 
     const formatReitColor = (rate) => {
-      let border = '2px solid '
-      if (rate >= 0 && rate < 3) border += '#E90000'
-      if (rate >= 3 && rate < 5) border += '#E97E00'
+      let border = '2px solid ';
+      if (rate >= 0 && rate < 3) border += '#E90000';
+      if (rate >= 3 && rate < 5) border += '#E97E00';
       if (rate >= 5 && rate < 7) border += '#E9D100';
       if (rate >= 7) border += '#66E900';
       return {
         border,
       };
-    }
-    const aver = res.length > 0 ? res[0]['userAverage'] : 0;
+    };
+    const aver = res.length > 0 ? res[0].userAverage : 0;
 
     return (
       <div key={this.state.id} className="film-card">
@@ -102,22 +100,19 @@ export default class FilmCard extends Component {
 
             <div className="card-date">{formatTime(this.state.data)}</div>
             <ServeceConsumer>
-              {
-                (consumer) => {
-                  if(this.state.genreIds){
-                   return consumer.map(({id, name}) => {
-                        if(this.state.genreIds.find(genreId => genreId === id)) {
-                          return (
-                            <Tag className="card-genre">
-                              <span className="card-genre-text">{name}</span>
-                            </Tag>
-                            )
-                        }
-                    })
-                  }
+              {(consumer) => {
+                if (this.state.genreIds) {
+                  return consumer.map(({ id, name }) => {
+                    if (this.state.genreIds.find((genreId) => genreId === id)) {
+                      return (
+                        <Tag className="card-genre">
+                          <span className="card-genre-text">{name}</span>
+                        </Tag>
+                      );
+                    }
+                  });
                 }
-              }
-            
+              }}
             </ServeceConsumer>
             <Paragraph className="card-description">
               <span className="card-description-text">{formatText(this.state.text, 'description')}</span>
@@ -133,6 +128,6 @@ export default class FilmCard extends Component {
           </Col>
         </Row>
       </div>
-    )
+    );
   }
 }
