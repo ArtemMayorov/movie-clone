@@ -37,7 +37,6 @@ export default class App extends Component {
   };
 
   onError = () => {
-    console.log('onErr');
     this.setState({
       error: true,
       loading: false,
@@ -52,7 +51,9 @@ export default class App extends Component {
     this.setState(() => ({
       dataAverage: [...this.state.dataAverage, { ...film, userAverage }],
     }));
-    this.filmServece.setRatedMovies(uniqBy([...this.state.dataAverage, { ...film, userAverage }], 'id'));
+    this.filmServece.setRatedMovies(
+      uniqBy([...this.state.dataAverage, { ...film, userAverage }], 'id')
+    );
   };
 
   getFilmList = async (filmName = 'return', page = 1) => {
@@ -60,7 +61,10 @@ export default class App extends Component {
       loadingSearchList: true,
       selectedPageNumber: page,
     });
-    const gengesList = await this.filmServece.getGenres().then().catch(this.onError);
+    const gengesList = await this.filmServece
+      .getGenres()
+      .then()
+      .catch(this.onError);
     await this.filmServece
       .getFilms(filmName, page)
       .then((filmsCollection) => {

@@ -20,7 +20,11 @@ const NoInternetConnection = () => {
     return null;
   }
   return (
-    <Alert className="no-internet-title" message="No Interner Connection. Please try again later." type="warning" />
+    <Alert
+      className="no-internet-title"
+      message="No Interner Connection. Please try again later."
+      type="warning"
+    />
   );
 };
 

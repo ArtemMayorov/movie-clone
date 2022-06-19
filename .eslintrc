@@ -1,66 +1,35 @@
-{   
-  "env": {
-    "browser": true,
-    "es2021": true
-  },
-  "ignorePatterns": ["node_modules", "dist", "build"],
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:prettier/recommended",
-    "plugin:import/errors",
-    "plugin:import/warnings"
-  ],
-  "parser" : "@babel/eslint-parser" , 
-  "parserOptions": {
-    "presets": ["@babel/preset-react"],
-    "plugins": ["jsx"],
-    "requireConfigFile": false,
-    "ecmaFeatures": {
-      "jsx": true
+{
+    "extends": ["airbnb", "prettier"],
+    "parser": "@babel/eslint-parser",
+    "parserOptions": {
+      "ecmaVersion": 2021,
+      "requireConfigFile": false,
+      "babelOptions": {
+        "presets": ["@babel/preset-react"]
+      }
     },
-    "parserOpts": {
-      "presets": ["@babel/preset-react"],
-      "plugins": ["jsx"]
+    "env": {
+      "browser": true,
+      "node": true,
+      "es6": true
     },
-    "ecmaVersion": 12,
-    "sourceType": "module"
-  },
-  "plugins": ["react", "prettier", "import"],
-  "rules": {
-    "indent": ["error", 2],
-    "prettier/prettier": "error",
-    "linebreak-style": [0, "unix"],
-    "quotes": ["error", "single"],
-    "semi": ["error", "always"],
-    "react/react-in-jsx-scope": "off",
+    "rules": {
+        "react/sort-comp":0,
+        "react/no-access-state-in-setstate":0,
+        "no-param-reassign":0,
+        " no-param-reassign":0,
+        "camelcase":0,
+        "consistent-return":0,
+        "array-callback-return":0,
+        "react/destructuring-assignment":0,
+        "react/no-unused-state":0,
+        "react/no-unused-class-component-methods":0,
+    "react/state-in-constructor": 0,
     "react/prop-types": 0,
-    "import/no-unresolved": [2, { "caseSensitive": false }],
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-    "import/order": [
-      2,
-      {
-        "groups": [
-          "builtin",
-          "external",
-          "internal",
-          "parent",
-          "sibling",
-          "index"
-        ],
-        "newlines-between": "always"
-      }
-    ]
-  },
-  "settings": {
-    "react": {
-      "version": "detect"
-    },
-    "import/resolver": {
-      "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"],
-        "moduleDirectory": ["node_modules", "src/"]
-      }
+      "react/function-component-definition": 0,
+      "no-unused-expressions": "off",
+      "react/prefer-stateless-function": "off",
+      "react/jsx-filename-extension": "off",
+      "react/jsx-one-expression-per-line": "off"
     }
   }
-}

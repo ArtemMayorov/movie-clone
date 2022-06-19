@@ -21,8 +21,16 @@ export default class FilmCard extends Component {
   };
 
   componentDidMount() {
-    const { original_title, vote_average, release_date, overview, id, backdrop_path, userAverage, genre_ids } =
-      this.props.filmProps;
+    const {
+      original_title,
+      vote_average,
+      release_date,
+      overview,
+      id,
+      backdrop_path,
+      userAverage,
+      genre_ids,
+    } = this.props.filmProps;
     this.idFilm = id;
     this.setState({
       srcForImg: this.filmServece.getImage(backdrop_path),
@@ -86,14 +94,21 @@ export default class FilmCard extends Component {
       <div key={this.state.id} className="film-card">
         <Row className="card-container">
           <Col>
-            <img className="card-image" src={this.state.srcForImg} alt="testImage" />
+            <img
+              className="card-image"
+              src={this.state.srcForImg}
+              alt="testImage"
+            />
           </Col>
           <Col className="card-container-body">
             <Typography className="card-typography">
               <Title level={5} className="card-title">
                 {formatText(this.state.title, 'title')}
               </Title>
-              <div className="card-average" style={formatReitColor(this.state.average)}>
+              <div
+                className="card-average"
+                style={formatReitColor(this.state.average)}
+              >
                 <span className="card-average-text">{this.state.average}</span>
               </div>
             </Typography>
@@ -115,7 +130,9 @@ export default class FilmCard extends Component {
               }}
             </ServeceConsumer>
             <Paragraph className="card-description">
-              <span className="card-description-text">{formatText(this.state.text, 'description')}</span>
+              <span className="card-description-text">
+                {formatText(this.state.text, 'description')}
+              </span>
             </Paragraph>
             <Rate
               className="card-stars"
